@@ -1,0 +1,126 @@
+{ // https://developer.chrome.com/extensions/manifest
+
+	"manifest_version": 2,
+	
+	"name": "WebExtAuto",
+	
+	"author": "Nico Pr",
+	
+	"version": "1.0",
+	
+	"description": "a chrome extension to bot websites",
+	
+	"permissions": [ // https://developer.chrome.com/extensions/declare_permissions
+		
+		"debugger",
+		"tabs",
+		"activeTab",
+		"storage"
+		
+	],
+	
+	"icons": { // https://developer.chrome.com/extensions/manifest/icons
+	
+		"48": "assets/icons/icon48.png",
+		"96": "assets/icons/icon96.png"
+		
+	},
+	
+	"browser_action": { // https://developer.chrome.com/extensions/browserAction
+	
+		"default_title": "Auto Ext Settings",
+		"default_icon": "assets/icons/icon48.png",
+		"default_popup": "resources/popup/popup.html"
+		
+	},
+	
+	"background": { // https://developer.chrome.com/extensions/background_pages
+	
+		"scripts": [
+		
+			"resources/base/extbase.js", // do not remove
+			"resources/auto/autoext.js", // do not remove
+			"resources/background.js" // do not remove
+			
+			//"resources/extension.min.js"
+			
+		]
+		
+	},
+
+	"content_scripts": [ // https://developer.chrome.com/extensions/content_scripts
+		{
+		
+			"matches": [ // https://developer.chrome.com/apps/match_patterns
+			
+				"*://localhost/",
+				
+				"*://twitter.com/",
+				
+				"*://www.google.fr/",
+				
+				"*://fr.yahoo.com/",
+				
+				"*://en.wikipedia.org/wiki/Main_Page",
+				
+				"*://www.qwant.com/",
+				
+				"*://www.instagram.com/"
+				
+			],
+			
+			"js": [
+				
+				"resources/base/extbase.js", // do not remove
+				"resources/auto/autoext.js", // do not remove
+				"resources/extension.js" // do not remove
+				
+				//"resources/extension.min.js" // do not remove
+				
+			],
+			
+			"run_at": "document_end" // https://developer.chrome.com/extensions/content_scripts#run_time
+			
+		}
+	],
+	
+	"web_accessible_resources": [ // https://developer.chrome.com/extensions/manifest/web_accessible_resources
+	
+		"resources/base/extbase.js",
+		"resources/web.js"
+		
+		//"resources/extension.min.js" // closure compiled
+		
+	],
+	
+	
+	"externally_connectable": { // https://developer.chrome.com/apps/manifest/externally_connectable // https://stackoverflow.com/a/18304985/3089199
+	
+		"ids": [
+		
+			
+			
+		],
+		
+		"matches": [ // https://developer.chrome.com/apps/match_patterns
+		
+			"*://localhost/*",
+			
+			"*://twitter.com/*",
+			
+			"*://www.google.fr/*",
+			
+			"*://fr.yahoo.com/*",
+			
+			"*://en.wikipedia.org/*",
+			
+			"*://www.qwant.com/*",
+			
+			"*://www.instagram.com/*"
+			
+		],
+		
+		"accepts_tls_channel_id": false
+		
+	}
+}
