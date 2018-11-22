@@ -25,8 +25,8 @@ Réaliser une extension web applicable au site [twitter](https://twitter.com/) _
 -----------------
 
 1) Implémenter une fonctionnalité pour que le bot tweet automatiquement (en cours).
-    * Effectuer la tache à l'ouverture de la page (en cours)
-    * Implémenter un bouton dans le Popup pour l'utiliser
+    * Effectuer la tache à l'ouverture de la page (fini)
+    * Implémenter un bouton dans le Popup pour l'utiliser (en cours)
     * Implémenter une base de donnée ou similaire pour y piocher les messages.
 
 2) Implémenter la possibilité au bot de retweeter et Liker.

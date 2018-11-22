@@ -100,7 +100,7 @@ class CustomExtensionContent extends AutoContentScript {
             var boutonPoster;
 
             champsDeTweet = new xph().ctx(document).craft(pathsTweet).firstResult();
-            boutonPoster = new xph().ctx(document).craft(pathsTweet).firstResult();
+            boutonPoster = new xph().ctx(document).craft(pathsBouton).firstResult();
             if (champsDeTweet === null || boutonPoster === null) return trace("element not found");
 
             /*
