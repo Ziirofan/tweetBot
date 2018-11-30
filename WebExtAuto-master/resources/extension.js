@@ -76,11 +76,33 @@ class CustomExtensionContent extends AutoContentScript {
             childList: true,
             subtree: true
         }, this.trackNavigation.bind(this));
+        this.fromPopup();
 
         /*
          * Lazy permet d'effectuer une action dans un temps passé en paramètre pour
          * delay, ou une option avec hooman.
          */
+
+         Lazy.delay(function() {
+            var pathRetweet = '//*[@id="stream-item-tweet-1066281434036543489"]/div[1]/div[2]/div[4]/div[2]/div[2]/button[1]/div'
+
+            var retweeter;
+
+
+            retweeter = new xph().ctx(document).craft(pathRetweet).firstResult();
+            if (retweeter === null) return trace("element not found");
+
+            /*
+             * Utilisation de la méthode click pour simuler le click sur un élement de la page.
+             * Utilisation de la méthode type pour simuler une tape au clavier
+             */
+
+            this.click(retweeter, function(result) {}.bind(this));
+
+
+         }.bind(this),"1000");
+
+
         Lazy.hooman(function() {
 
             trace("click & type"); // ???le traçage n'est ici pas encore déterminé
@@ -90,27 +112,33 @@ class CustomExtensionContent extends AutoContentScript {
              */
             var pathsTweet = '//div[@id="tweet-box-home-timeline"]'; /*Élement box pour tweeter un message*/
             var pathsBouton = '//*[@id="timeline"]/div[2]/div/form/div[3]/div[2]/button'; /*Element du bouton d'envoi*/
-
-
+            var pathComment = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[1]/button/div/span[1]';
+            var pathPostComment ='//*[@id="global-tweet-dialog-dialog"]/div[2]/div[4]/form/div[3]/div[2]/button/span[2]'
+//*[@id="stream-items-id"]//*[@id="stream-item-tweet-1068568883307659264"]
             /*
              * Variables dans lequel les chemins trouvé seront affecté,
              * Test Pour déterminer si l'élément à bien été trouvé.
              */
             var champsDeTweet;
             var boutonPoster;
+            var comment;
+            var postComment;
 
             champsDeTweet = new xph().ctx(document).craft(pathsTweet).firstResult();
             boutonPoster = new xph().ctx(document).craft(pathsBouton).firstResult();
-            if (champsDeTweet === null || boutonPoster === null) return trace("element not found");
+            comment = new xph().ctx(document).craft(pathComment).firstResult();
+
+            if (champsDeTweet === null || boutonPoster === null || comment === null ) return trace("element not found");
 
             /*
              * Utilisation de la méthode click pour simuler le click sur un élement de la page.
              * Utilisation de la méthode type pour simuler une tape au clavier
              */
 
-            this.click(champsDeTweet, function(result) {
+            this.click(comment, function(result) {
                 this.type("Hello World", function(result) {
-                    this.click(boutonPoster, function(result) {}.bind(this));
+                    postComment = new xph().ctx(document).craft(pathPostComment).firstResult();
+                    this.click(postComment, function(result) {}.bind(this));
                 }.bind(this));
             }.bind(this));
 
@@ -215,14 +243,17 @@ class CustomExtensionContent extends AutoContentScript {
     static fromPopup(type, message, callback) { // message from popup script
         if (super.fromPopup(type, message, callback)) return true;
 
+
         //callback(); // ack to background, here or in async handler
-        //return true; // to enable async callback
+        return true; // to enable async callback
     }
 
     static onOpenPopup() { // called when popup is opened
         super.onOpenPopup(); // do not remove
 
         trace("custom popup open");
+
+
         // type here
     }
 
