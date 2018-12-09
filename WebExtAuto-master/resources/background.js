@@ -55,6 +55,7 @@ class CustomExtensionBackground extends AutoBackgroundScript {
 
 	static fromPopup(type, message, callback) { // message from popup script
 		if(super.fromPopup(type, message, callback)) return true;
+		//toContent("string","fromPopu");
 
 		//callback(); // ack to background, here or in async handler
 		//return true; // to enable async callback
