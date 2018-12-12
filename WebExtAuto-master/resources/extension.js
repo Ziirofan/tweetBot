@@ -1,5 +1,3 @@
-
-
 /**
  * @nocollapse
  * @extends {AutoContentScript}
@@ -25,130 +23,33 @@ class CustomExtensionContent extends AutoContentScript {
         }, this.trackNavigation.bind(this));
 
 
-        /*
-         * Lazy permet d'effectuer une action dans un temps passé en paramètre pour
-         * delay, ou une option avec hooman.
-         */
+        this.actionTweet("tweeter", "Bonjour");
+    }
+    static actionTweet(action, message) {
 
+        console.log("action: " + action);
+        trace("click & type");
+        switch (action) {
+            case "tweeter":
+                return this.tweeter(message);
+                break;
+            case "commenter":
+                return this.commenter(message);
+                break;
+            case "retweeter":
+                return this.retweeter();
+                break;
+            default:
+                console.log("action non implémenté");
+        }
 
-
-
-        Lazy.hooman(function() {
-
-            trace("click & type"); // ???le traçage n'est ici pas encore déterminé
-
-            /*
-             * Utilisation de variable pour le modèle du xpath à rechercher
-             */
-            var pathsTweet = '//div[@id="tweet-box-home-timeline"]'; /*Élement box pour tweeter un message*/
-            var pathsBouton = '//*[@id="timeline"]/div[2]/div/form/div[3]/div[2]/button'; /*Element du bouton d'envoi*/
-            var pathComment = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[1]/button/div/span[1]';
-            var pathPostComment ='//*[@id="global-tweet-dialog-dialog"]/div[2]/div[4]/form/div[3]/div[2]/button/span[2]';
-            var pathRetweet = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[2]/button[1]/div/span[1]';
-//*[@id="stream-items-id"]//*[@id="stream-item-tweet-1068568883307659264"]
-//*[@id="stream-item-tweet-1068571876719501315"]/ol/li[2]/div/div[2]/div[3]/div[2]/div[1]/button
-//*[@id="stream-item-tweet-1068571876719501315"]/ol/li[1]/div/div[2]/div[3]/div[2]/div[3]/button[1]/div/div
-            /*
-             * Variables dans lequel les chemins trouvé seront affecté,
-             * Test Pour déterminer si l'élément à bien été trouvé.
-             */
-            var champsDeTweet;
-            var boutonPoster;
-            var comment;
-            var postComment;
-            var retweeter
-            var bouttonRetweet;
-
-            champsDeTweet = new xph().ctx(document).craft(pathsTweet).firstResult();
-            boutonPoster = new xph().ctx(document).craft(pathsBouton).firstResult();
-            comment = new xph().ctx(document).craft(pathComment).firstResult();
-            bouttonRetweet = new xph().ctx(document).craft(pathRetweet).firstResult();
-
-            if (champsDeTweet === null || boutonPoster === null || comment === null || bouttonRetweet === null ) return trace("element not found");
-
-            /*
-             * Utilisation de la méthode click pour simuler le click sur un élement de la page.
-             * Utilisation de la méthode type pour simuler une tape au clavier
-             */
-
-             this.click(bouttonRetweet, function(result){}.bind(this));
-
-            // this.click(comment, function(result) {
-            //     this.type("Hello World", function(result) {
-            //         postComment = new xph().ctx(document).craft(pathPostComment).firstResult();
-            //         this.click(postComment, function(result) {}.bind(this));
-            //     }.bind(this));
-            // }.bind(this));
-
-
-
-
-        }.bind(this), "medium");
-        //
-        //         Lazy.delay(function() {
-        //
-        //         	//var hlp = new xph().ctx(document).path("//div").group().textContains("hellftfso").or().textEquals("hello world !").close().firstResult();
-        //         	//trace(hlp);
-        //
-        //         	trace("click & type");
-        // // //*[@id="tweet-box-home-timeline"]
-        // ////*[@id="swift_tweetbox_1542645621850"]/div[3]/div[2]/button
-        //         	var paths = [
-        //         		'//div[@id="tweet-box-home-timeline"]', 			// twitter
-        //                 '//[@id="swift_tweetbox_1542645621850"]/div[3]/div[2]/button',
-        //         		'//input[@id="uh-search-box"]', 		// yahoo
-        //         		'//input[@aria-label="Search"]', 		// google
-        //         		'//input[@id="searchInput"]', 			// wikipedia
-        //         		'//input[@aria-label="search_bar"]', 	// qwant
-        //         		'//input[@placeholder="Search"]', 		// instagram
-        //         	];
-        //             var path2 = ['//*[@id="swift_tweetbox_1542645621850"]/div[3]/div[2]/button'];
-        //         	var searchfield = null;
-        //             var searchbutton = null;
-        //
-        //         	for(var i = 0, l = paths.length; i < l; i++) {
-        //         		searchfield = new xph().ctx(document).craft(paths[i]).firstResult();
-        //         		if(searchfield !== null) break;
-        //         	}
-        //         	if(searchfield === null) return trace("search field not found");
-        //
-        //             for(var i = 0, l = path2.length; i < l; i++) {
-        //         		searchbutton = new xph().ctx(document).craft(path2[i]).firstResult();
-        //         		if(searchbutton !== null) break;
-        //         	}
-        //         	if(searchbutton === null) return trace("button tweet not found");
-        //
-        //
-        //
-        //
-        //         	this.click(searchfield, function(result) {
-        //         		this.type("helloworld", function() {
-        //         			this.click(searchbutton, function() {
-        //         				trace("perform search");
-        //         			}.bind(this));
-        //         		}.bind(this));
-        //         	}.bind(this));
-        //
-        //         }.bind(this), 1000);
-
-        // Lazy.delay(function() {
-        //
-        //     trace("click & tape");
-        //
-        //     var path = [
-        //         'div[@id="user-dropdown"]'
-        //     ];
-        //     var tweetButton = null;
-        //     for (var i = 0, l = path.length; i < l; i++) {
-        //         tweetButton = new xph().ctx(document).craft(path[i]).firstResult();
-        //         if (tweetButton !== null) break;
-        //     }
-        //     if (tweetButton === null) return trace("tweetButton not found");
-        //     this.click(tweetButton, function(result) {}.bind(this));
-        // });
 
 
     }
+
+
+
+
 
     static trackNavigation(trackid, item, element, mutationtype, mutation) {
         //trace(mutation);

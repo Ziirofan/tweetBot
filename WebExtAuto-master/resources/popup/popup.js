@@ -34,6 +34,7 @@ class CustomExtensionPopup extends ExtensionPopupScript {
 	* @param none
 	* @this {CustomExtensionPopup}
 	*/
+    
 
     static onClickButton(){
 
