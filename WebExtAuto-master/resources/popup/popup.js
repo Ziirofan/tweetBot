@@ -24,16 +24,22 @@ class CustomExtensionPopup extends ExtensionPopupScript {
         trace(this.name, "custom init");
         console.log("ici");
         // type here
-        this.onclickButton();
+        var element = elementFactory("div", document.body, 100, 100, 40,40,{backgroundColor:"brown", border:"3px solid red"});
+        this.onClickButton();
 
     }
 
-    static onclickButton(){
+    /**
+	* @method onClickButton: detecte click button
+	* @param none
+	* @this {CustomExtensionPopup}
+	*/
+    
 
+    static onClickButton(){
 
-            var element = document.getElementById("tweeter");
-            elemnt.addEventListener("click", function(){
-                console.log("click");
+            document.addEventListener("click", function(){
+                //toBackground("string","from popup");
             }.bind(this));
     }
 
