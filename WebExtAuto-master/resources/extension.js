@@ -22,14 +22,37 @@ class CustomExtensionContent extends AutoContentScript {
             subtree: true
         }, this.trackNavigation.bind(this));
 
+	this.follow();
+	
 
-        this.actionTweet("tweeter", "Bonjour");
     }
+
+	static follow(){
+
+
+    this.actionTweet("rechercher", "Bonjour");
+	
+	let path = '//*[@id="page-container"]/div[1]/div[2]/div/ul/li[3]/a'
+	this.clickOnElement(path, "5000");
+	setTimeout(function() {
+  //your code to be executed after 1 second
+}, "5000");
+	let path2 = '//*[@id="page-container"]/div[2]/div/div/div[2]/div/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div/div/span[2]/button'
+	this.clickOnElement(path2, "6000");
+
+
+	}
+
+	
+
     static actionTweet(action, message) {
 
         console.log("action: " + action);
         trace("click & type");
         switch (action) {
+			case "rechercher":
+				return this.rechercher(message);
+				break;
             case "tweeter":
                 return this.tweeter(message);
                 break;
@@ -85,7 +108,7 @@ class CustomExtensionContent extends AutoContentScript {
 
 
         //callback(); // ack to background, here or in async handler
-        return true; // to enable async callback
+        //return true; // to enable async callback
     }
 
     static onOpenPopup() { // called when popup is opened

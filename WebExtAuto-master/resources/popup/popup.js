@@ -39,7 +39,7 @@ class CustomExtensionPopup extends ExtensionPopupScript {
     static onClickButton(){
 
             document.addEventListener("click", function(){
-                //toBackground("string","from popup");
+                toBackground("click","from popup");
             }.bind(this));
     }
 

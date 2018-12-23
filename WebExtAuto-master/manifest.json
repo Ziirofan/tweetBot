@@ -57,6 +57,8 @@
 
 				"*://twitter.com/",
 
+				"*://twitter.com/*",
+
 				"*://www.google.fr/",
 
 				"*://fr.yahoo.com/",

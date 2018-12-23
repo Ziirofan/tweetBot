@@ -107,6 +107,34 @@ class AutoBackgroundScript extends ExtensionBackgroundScript {
         }
 
     }
+    
+	static fromPopup(tabid, type, message, callback) {
+        super.fromPopup(tabid, type, message, callback); // don't remove this one, super has work to do
+
+        switch (type) {
+            case "click":
+                this.click(tabid, message, callback);
+				console.log("BBBB");
+                return true;
+                break;
+
+            case "press":
+                this.key(tabid, message, callback);
+                return true;
+                break;
+
+            case "type":
+                this.type(tabid, message, callback);
+                return true;
+                break;
+
+            case "scroll":
+                this.scroll(tabid, message, callback);
+                return true;
+                break;
+        }
+	}
+
 
 
     // keyboard events // TODO shorten type method by calling key on every loop + merge keydown / char / up methods
@@ -593,13 +621,47 @@ class AutoContentScript extends ExtensionContentScript {
     }
 
     /// keyboard
+	
+	static clickOnElement(path,delay){
+		Lazy.delay(function(){
+		let pathEleme = new xph().ctx(document).craft(path).firstResult();
+		if(pathEleme == null)
+			return trace("element not found");
+		else
+			this.click(pathEleme, function(result){ return trace(" Element clicked ");});
+	}.bind(this),delay);
+	}
+
+	/**
+	 * @method rechercher : recherche un mot
+	 * @param {string} keyword :
+	 *
+	 */
+
+    static rechercher(message) {
+        Lazy.delay(function(message) {
+            var pathsSearch = '//input[@id="search-query"]';
+
+            var champsDeRecherche = new xph().ctx(document).craft(pathsSearch).firstResult();
+
+            if (champsDeRecherche === null)
+                return trace("element not found");
+
+            this.click(champsDeRecherche, function(result) {
+                this.type("h", function(result) {
+                    this.press("\r", function(result) {}.bind(this));
+                }.bind(this));
+            }.bind(this));
+        }.bind(this), "1000");
+	}
 
 	/**
      * @method tweeter: tweeter string text
      * @param {string} message:
      */
+
     static tweeter(message) {
-        Lazy.hooman(function(message) {
+        Lazy.delay(function(message) {
             var pathsTweet = '//div[@id="tweet-box-home-timeline"]'; /*Élement box pour tweeter un message*/
             var pathsBouton = '//*[@id="timeline"]/div[2]/div/form/div[3]/div[2]/button'; /*Element du bouton d'envoi*/
 
@@ -615,7 +677,7 @@ class AutoContentScript extends ExtensionContentScript {
                     this.click(boutonPoster, function(result) {}.bind(this));
                 }.bind(this));
             }.bind(this));
-        }.bind(this), "medium");
+        }.bind(this), "1000");
 
     }
 
@@ -624,7 +686,7 @@ class AutoContentScript extends ExtensionContentScript {
      * @param {string} message:
      */
     static commenter(message) {
-        Lazy.hooman(function(message) {
+        Lazy.delay(function(message) {
             var pathComment = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[1]/button/div/span[1]';
             var pathPostComment = '//*[@id="global-tweet-dialog-dialog"]/div[2]/div[4]/form/div[3]/div[2]/button/span[2]';
 
@@ -640,7 +702,7 @@ class AutoContentScript extends ExtensionContentScript {
                     this.click(postComment, function(result) {}.bind(this));
                 }.bind(this));
             }.bind(this));
-        }.bind(this), "medium");
+        }.bind(this), "1000");
     }
 
 	/**
@@ -648,7 +710,7 @@ class AutoContentScript extends ExtensionContentScript {
      * @param {string} message:
      */
     static retweeter(message) {
-        Lazy.hooman(function(message) {
+        Lazy.delay(function(message) {
             var pathRetweet = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[2]/button[1]/div/span[1]';
 
             var retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
@@ -657,7 +719,7 @@ class AutoContentScript extends ExtensionContentScript {
                 return trace("element not found");
 
             this.click(retweet, function(result) {}.bind(this));
-        }.bind(this), "medium");
+        }.bind(this), "1000");
     }
 
 }
