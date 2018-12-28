@@ -22,37 +22,61 @@ class CustomExtensionContent extends AutoContentScript {
             subtree: true
         }, this.trackNavigation.bind(this));
 
-	this.follow();
-	
+        this.follow();
+
 
     }
 
-	static follow(){
+    static follow() {
 
 
-    this.actionTweet("rechercher", "Bonjour");
-	
-	let path = '//*[@id="page-container"]/div[1]/div[2]/div/ul/li[3]/a'
-	this.clickOnElement(path, "5000");
-	setTimeout(function() {
-  //your code to be executed after 1 second
-}, "5000");
-	let path2 = '//*[@id="page-container"]/div[2]/div/div/div[2]/div/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div/div/span[2]/button'
-	this.clickOnElement(path2, "6000");
 
 
-	}
 
-	
+        /*
+         * Utiliser une promise, quand celle-ci est tenue on cherche ensuite l'element
+         * follow par une recherche par nom. 
+         */
+        function attenteClick() {
+            return new Promise((resolve, reject) => {
+
+                let path = '//*[@id="page-container"]/div[1]/div[2]/div/ul/li[3]/a'
+                let retour = this.clickOnElement(path, "5000")
+                if (retour)
+                    resolve("true");
+                else
+                    resolve("false");
+            });
+        }
+        async function follower() {
+            let reponse = await attenteClick.call(this);
+            if (reponse === "true") {
+                let path2 = '//*[@id="page-container"]/div[2]/div/div/div[2]/div/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div/div/span[2]/button[1]'
+                this.clickOnElement(path2, "6000");
+            } else
+                console.log("erreur de resolution de promesse");
+        }
+
+        /*   console.log("recherche de bouton follow");
+           let c = document.evaluate('//text()[contains(name(.), suivre)]',document.body,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null);
+           console.log(c);*/
+        this.actionTweet("rechercher", "Bonjour");
+        follower.call(this);
+
+
+
+    }
+
+
 
     static actionTweet(action, message) {
 
         console.log("action: " + action);
         trace("click & type");
         switch (action) {
-			case "rechercher":
-				return this.rechercher(message);
-				break;
+            case "rechercher":
+                return this.rechercher(message);
+                break;
             case "tweeter":
                 return this.tweeter(message);
                 break;

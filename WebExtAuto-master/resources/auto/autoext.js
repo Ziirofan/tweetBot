@@ -6,7 +6,7 @@ class AutoBackgroundScript extends ExtensionBackgroundScript {
 
     constructor() { // useless, for closure compiler
         super();
-    }
+    } 
 
     /**
      * @method initialize:
@@ -626,9 +626,11 @@ class AutoContentScript extends ExtensionContentScript {
 		Lazy.delay(function(){
 		let pathEleme = new xph().ctx(document).craft(path).firstResult();
 		if(pathEleme == null)
-			return trace("element not found");
-		else
+			return false;
+		else{
 			this.click(pathEleme, function(result){ return trace(" Element clicked ");});
+            return true;
+        }
 	}.bind(this),delay);
 	}
 
@@ -645,7 +647,7 @@ class AutoContentScript extends ExtensionContentScript {
             var champsDeRecherche = new xph().ctx(document).craft(pathsSearch).firstResult();
 
             if (champsDeRecherche === null)
-                return trace("element not found");
+                return false /*trace("element not found")*/;
 
             this.click(champsDeRecherche, function(result) {
                 this.type("h", function(result) {
@@ -669,7 +671,7 @@ class AutoContentScript extends ExtensionContentScript {
             var boutonPoster;
 
             if (champsDeTweet === null)
-                return trace("element not found");
+                return false;
 
             this.click(champsDeTweet, function(result) {
                 this.type("h", function(result) {
@@ -694,7 +696,7 @@ class AutoContentScript extends ExtensionContentScript {
             var boutonPoste;
 
             if (comment == NULL)
-                return trace("element not found");
+                return false /*trace("element not found")*/;
 
             this.click(comment, function(result) {
                 this.type(message, function(result) {
@@ -716,7 +718,7 @@ class AutoContentScript extends ExtensionContentScript {
             var retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
 
             if (retweet == NULL)
-                return trace("element not found");
+                return false /*trace("element not found")*/;
 
             this.click(retweet, function(result) {}.bind(this));
         }.bind(this), "1000");
