@@ -29,7 +29,42 @@ class CustomExtensionContent extends AutoContentScript {
 
     static follow() {
 
+        ////*[@id="page-container"]/div[1]/div[2]/div[1]/div[1]/small[2]/a
+        ////*[@id="stream-item-user-*"]/div/div[1]/div/span/button[1]
+        /*
+            
 
+
+
+
+        
+        let f = document.getElementsByClassName('follow-button')
+        console.log(f);
+        for(let i= 0; i<f.length;i++){
+            f[i].click();
+        }*/
+        async function glick() {
+            let pathA = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[1]/small[2]/a'
+            let click = this.clickOnElement(pathA, "6000");
+            console.log(click);
+            let pathcrafted = new xph().ctx(document).craft(pathA).textContains("suivre");
+        }
+        async function fol() {
+            await glick.call(this);
+            Lazy.delay(function() {
+                this.click(pathcrafted);
+
+            }.bind(this), "1000");
+            c = document.evaluate('//text()[contains(name(.), suivre)]', document.body, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+            var thisNode = c.iterateNext();
+
+            while (thisNode) {
+                console.log(thisNode.textContent);
+                thisNode = c.iterateNext();
+            }
+        }
+        fol.call(this);
+        //console.log(r);
 
 
 
@@ -37,7 +72,7 @@ class CustomExtensionContent extends AutoContentScript {
          * Utiliser une promise, quand celle-ci est tenue on cherche ensuite l'element
          * follow par une recherche par nom. 
          */
-        function attenteClick() {
+        /*function attenteClick() {
             return new Promise((resolve, reject) => {
 
                 let path = '//*[@id="page-container"]/div[1]/div[2]/div/ul/li[3]/a'
@@ -60,8 +95,8 @@ class CustomExtensionContent extends AutoContentScript {
         /*   console.log("recherche de bouton follow");
            let c = document.evaluate('//text()[contains(name(.), suivre)]',document.body,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null);
            console.log(c);*/
-        this.actionTweet("rechercher", "Bonjour");
-        follower.call(this);
+        /*this.actionTweet("rechercher", "Bonjour");
+        follower.call(this);*/
 
 
 

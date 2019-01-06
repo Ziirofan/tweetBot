@@ -628,7 +628,7 @@ class AutoContentScript extends ExtensionContentScript {
 		if(pathEleme == null)
 			return false;
 		else{
-			this.click(pathEleme, function(result){ return trace(" Element clicked ");});
+			this.click(pathEleme, function(result){ return true;});
             return true;
         }
 	}.bind(this),delay);
