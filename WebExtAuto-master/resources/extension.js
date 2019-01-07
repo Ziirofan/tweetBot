@@ -17,6 +17,7 @@ class CustomExtensionContent extends AutoContentScript {
      */
     static initialized() {
         trace(this.name, "custom init");
+        this.message = null;
         Observer.watch(document.body, {
             childList: true,
             subtree: true
@@ -24,10 +25,25 @@ class CustomExtensionContent extends AutoContentScript {
 
         this.follow();
 
+        this.retweeter("retweeter");
+
+        this.actionTweet("tweeter", "premier");
+        //this.actionSuccessive();
+        this.actionTweet("commenter","second");
 
     }
 
-    static follow() {
+    /**
+     * @method actionSuccessive: démonstration du bot
+     */
+
+    static actionSuccessive(){
+        setTimeout(this.actionTweet("tweeter", "premier"), 2000);
+        setTimeout(this.actionTweet("commenter", "second"), 5000);
+    
+    }
+
+   // static follow() {
 
         ////*[@id="page-container"]/div[1]/div[2]/div[1]/div[1]/small[2]/a
         ////*[@id="stream-item-user-*"]/div/div[1]/div/span/button[1]
@@ -43,27 +59,32 @@ class CustomExtensionContent extends AutoContentScript {
         for(let i= 0; i<f.length;i++){
             f[i].click();
         }*/
-        async function glick() {
+       /* async function glick() {
             let pathA = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[1]/small[2]/a'
             let click = this.clickOnElement(pathA, "6000");
             console.log(click);
-            let pathcrafted = new xph().ctx(document).craft(pathA).textContains("suivre");
+            
         }
         async function fol() {
-            await glick.call(this);
-            Lazy.delay(function() {
+            let foo = await glick.call(this);
+            let pathcrafted = new xph().ctx(document).craft(pathA).textContains("suivre");
+            Lazy.delay(function(foo) {
                 this.click(pathcrafted);
 
             }.bind(this), "1000");
-            c = document.evaluate('//text()[contains(name(.), suivre)]', document.body, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+            let ff = document.querySelectorAll('follow-button');
+            for(let i = 0; i < ff.length; i++){
+                console.log(ff[i]);
+            }*/
+            /*let c = document.evaluate('//text()[contains(name(.), suivre)]', document.body, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
             var thisNode = c.iterateNext();
 
             while (thisNode) {
                 console.log(thisNode.textContent);
                 thisNode = c.iterateNext();
-            }
-        }
-        fol.call(this);
+            }*/
+       // }
+        //fol.call(this);
         //console.log(r);
 
 
@@ -100,13 +121,18 @@ class CustomExtensionContent extends AutoContentScript {
 
 
 
-    }
-
+   // }
+    /**
+     * @method actionTweet: réalise une action du bot
+     * @param {string} action: action à effectuer
+     * @param {string} message: message à transmettre
+     */
 
 
     static actionTweet(action, message) {
 
         console.log("action: " + action);
+        this.message=message;
         trace("click & type");
         switch (action) {
             case "rechercher":
@@ -174,6 +200,7 @@ class CustomExtensionContent extends AutoContentScript {
         super.onOpenPopup(); // do not remove
         //fromBackground(string, message, function(){console.log(message);});
         trace("custom popup open");
+        setInterval(this.follow(), 2000);
 
 
         // type here
