@@ -6,7 +6,7 @@ class AutoBackgroundScript extends ExtensionBackgroundScript {
 
     constructor() { // useless, for closure compiler
         super();
-    }
+    } 
 
     /**
      * @method initialize:
@@ -107,6 +107,34 @@ class AutoBackgroundScript extends ExtensionBackgroundScript {
         }
 
     }
+    
+	static fromPopup(tabid, type, message, callback) {
+        super.fromPopup(tabid, type, message, callback); // don't remove this one, super has work to do
+
+        switch (type) {
+            case "click":
+                this.click(tabid, message, callback);
+				console.log("BBBB");
+                return true;
+                break;
+
+            case "press":
+                this.key(tabid, message, callback);
+                return true;
+                break;
+
+            case "type":
+                this.type(tabid, message, callback);
+                return true;
+                break;
+
+            case "scroll":
+                this.scroll(tabid, message, callback);
+                return true;
+                break;
+        }
+	}
+
 
 
     // keyboard events // TODO shorten type method by calling key on every loop + merge keydown / char / up methods
@@ -594,28 +622,71 @@ class AutoContentScript extends ExtensionContentScript {
 
     /// keyboard
 
+     /**
+     * @method clickOnElement: click on one element selected by path
+     * @param {string} path:
+     * @param {Function} delay:
+     */
+	
+	static clickOnElement(path,delay){
+		Lazy.delay(function(){
+		let pathEleme = new xph().ctx(document).craft(path).firstResult();
+		if(pathEleme == null)
+			return false;
+		else{
+			this.click(pathEleme, function(result){ return true;});
+            return true;
+        }
+	}.bind(this),delay);
+	}
+
+	/**
+	 * @method rechercher : recherche un mot
+	 * @param {string} keyword :
+	 *
+	 */
+    static rechercher(message) {
+        Lazy.delay(function(message) {
+            var pathsSearch = '//input[@id="search-query"]';
+
+            var champsDeRecherche = new xph().ctx(document).craft(pathsSearch).firstResult();
+
+            if (champsDeRecherche === null)
+                return false /*trace("element not found")*/;
+
+            this.click(champsDeRecherche, function(result) {
+                this.type("h", function(result) {
+                    this.press("\r", function(result) {}.bind(this));
+                }.bind(this));
+            }.bind(this));
+        }.bind(this), "1000");
+	}
+
 	/**
      * @method tweeter: tweeter string text
      * @param {string} message:
      */
+
     static tweeter(message) {
-        Lazy.hooman(function(message) {
+        Lazy.delay(function(message) {
+
             var pathsTweet = '//div[@id="tweet-box-home-timeline"]'; /*Élement box pour tweeter un message*/
             var pathsBouton = '//*[@id="timeline"]/div[2]/div/form/div[3]/div[2]/button'; /*Element du bouton d'envoi*/
-
+            let mes = this.message;
             var champsDeTweet = new xph().ctx(document).craft(pathsTweet).firstResult();
             var boutonPoster;
 
             if (champsDeTweet === null)
-                return trace("element not found");
+                return false;
 
             this.click(champsDeTweet, function(result) {
-                this.type("h", function(result) {
+                this.type(mes, function(result) {
                     boutonPoster = new xph().ctx(document).craft(pathsBouton).firstResult();
                     this.click(boutonPoster, function(result) {}.bind(this));
                 }.bind(this));
             }.bind(this));
-        }.bind(this), "medium");
+            return true;
+        }.bind(this), "5000");
 
     }
 
@@ -624,23 +695,26 @@ class AutoContentScript extends ExtensionContentScript {
      * @param {string} message:
      */
     static commenter(message) {
-        Lazy.hooman(function(message) {
+        Lazy.delay(function(message) {
             var pathComment = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[1]/button/div/span[1]';
             var pathPostComment = '//*[@id="global-tweet-dialog-dialog"]/div[2]/div[4]/form/div[3]/div[2]/button/span[2]';
-
+            let mes = this.message;
             var comment = new xph().ctx(document).craft(pathComment).firstResult();
             var boutonPoste;
 
-            if (comment == NULL)
-                return trace("element not found");
+            if (comment == null){
+                trace("element not found");
+                return false /*trace("element not found")*/;
+            }
 
             this.click(comment, function(result) {
-                this.type(message, function(result) {
+                this.type(mes, function(result) {
                     postComment = new xph().ctx(document).craft(pathPostComment).firstResult();
-                    this.click(postComment, function(result) {}.bind(this));
+                    setTimeout(
+                    this.click(postComment, function(result) {}.bind(this)), 2000);
                 }.bind(this));
             }.bind(this));
-        }.bind(this), "medium");
+        }.bind(this), "10000");
     }
 
 	/**
@@ -648,16 +722,38 @@ class AutoContentScript extends ExtensionContentScript {
      * @param {string} message:
      */
     static retweeter(message) {
-        Lazy.hooman(function(message) {
+        Lazy.delay(function(message) {
             var pathRetweet = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[2]/button[1]/div/span[1]';
 
             var retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
 
             if (retweet == NULL)
-                return trace("element not found");
+                return false /*trace("element not found")*/;
 
             this.click(retweet, function(result) {}.bind(this));
-        }.bind(this), "medium");
+        }.bind(this), "3000");
+    }
+
+    /**
+     * @method follow: follow account 
+     */
+    static follow() {
+        Lazy.delay(function(message) {
+            let pathFollow1 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[1]/div[3]/div/span/button[1]';
+            let pathFollow2 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[2]/div[3]/div/span/button[1]';
+            let pathFollow3 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[3]/div[3]/div/span/button[1]';
+
+            let follow1 = new xph().ctx(document).craft(pathFollow1).firstResult();
+            let follow2 = new xph().ctx(document).craft(pathFollow2).firstResult();
+            let follow3 = new xph().ctx(document).craft(pathFollow3).firstResult();
+
+            if (follow1 == null)
+                return false /*trace("element not found")*/;
+
+            this.click(follow1, function(result) {}.bind(this));
+            //setTimeout(this.click(follow2, function(result) {}.bind(this)), 2000);
+            //this.click(follow3, function(result) {}.bind(this));
+        }.bind(this), "1000");
     }
 
 }

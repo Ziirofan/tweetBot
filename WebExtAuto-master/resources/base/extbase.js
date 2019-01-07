@@ -2221,7 +2221,6 @@ class ExtensionContentScript extends ExtensionScript {
 	}
 
 	static onOpenPopup() {
-
 	}
 
 	static onClosePopup() {

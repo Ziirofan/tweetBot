@@ -17,19 +17,127 @@ class CustomExtensionContent extends AutoContentScript {
      */
     static initialized() {
         trace(this.name, "custom init");
+        this.message = null;
         Observer.watch(document.body, {
             childList: true,
             subtree: true
         }, this.trackNavigation.bind(this));
 
+        this.follow();
 
-        this.actionTweet("tweeter", "Bonjour");
+        this.retweeter("retweeter");
+
+        this.actionTweet("tweeter", "premier");
+        //this.actionSuccessive();
+        this.actionTweet("commenter","second");
+
     }
+
+    /**
+     * @method actionSuccessive: démonstration du bot
+     */
+
+    static actionSuccessive(){
+        setTimeout(this.actionTweet("tweeter", "premier"), 2000);
+        setTimeout(this.actionTweet("commenter", "second"), 5000);
+    
+    }
+
+   // static follow() {
+
+        ////*[@id="page-container"]/div[1]/div[2]/div[1]/div[1]/small[2]/a
+        ////*[@id="stream-item-user-*"]/div/div[1]/div/span/button[1]
+        /*
+            
+
+
+
+
+        
+        let f = document.getElementsByClassName('follow-button')
+        console.log(f);
+        for(let i= 0; i<f.length;i++){
+            f[i].click();
+        }*/
+       /* async function glick() {
+            let pathA = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[1]/small[2]/a'
+            let click = this.clickOnElement(pathA, "6000");
+            console.log(click);
+            
+        }
+        async function fol() {
+            let foo = await glick.call(this);
+            let pathcrafted = new xph().ctx(document).craft(pathA).textContains("suivre");
+            Lazy.delay(function(foo) {
+                this.click(pathcrafted);
+
+            }.bind(this), "1000");
+            let ff = document.querySelectorAll('follow-button');
+            for(let i = 0; i < ff.length; i++){
+                console.log(ff[i]);
+            }*/
+            /*let c = document.evaluate('//text()[contains(name(.), suivre)]', document.body, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+            var thisNode = c.iterateNext();
+
+            while (thisNode) {
+                console.log(thisNode.textContent);
+                thisNode = c.iterateNext();
+            }*/
+       // }
+        //fol.call(this);
+        //console.log(r);
+
+
+
+        /*
+         * Utiliser une promise, quand celle-ci est tenue on cherche ensuite l'element
+         * follow par une recherche par nom. 
+         */
+        /*function attenteClick() {
+            return new Promise((resolve, reject) => {
+
+                let path = '//*[@id="page-container"]/div[1]/div[2]/div/ul/li[3]/a'
+                let retour = this.clickOnElement(path, "5000")
+                if (retour)
+                    resolve("true");
+                else
+                    resolve("false");
+            });
+        }
+        async function follower() {
+            let reponse = await attenteClick.call(this);
+            if (reponse === "true") {
+                let path2 = '//*[@id="page-container"]/div[2]/div/div/div[2]/div/div/div/div[2]/div[1]/div[1]/div/div/div[1]/div/div/div/span[2]/button[1]'
+                this.clickOnElement(path2, "6000");
+            } else
+                console.log("erreur de resolution de promesse");
+        }
+
+        /*   console.log("recherche de bouton follow");
+           let c = document.evaluate('//text()[contains(name(.), suivre)]',document.body,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null);
+           console.log(c);*/
+        /*this.actionTweet("rechercher", "Bonjour");
+        follower.call(this);*/
+
+
+
+   // }
+    /**
+     * @method actionTweet: réalise une action du bot
+     * @param {string} action: action à effectuer
+     * @param {string} message: message à transmettre
+     */
+
+
     static actionTweet(action, message) {
 
         console.log("action: " + action);
+        this.message=message;
         trace("click & type");
         switch (action) {
+            case "rechercher":
+                return this.rechercher(message);
+                break;
             case "tweeter":
                 return this.tweeter(message);
                 break;
@@ -85,13 +193,14 @@ class CustomExtensionContent extends AutoContentScript {
 
 
         //callback(); // ack to background, here or in async handler
-        return true; // to enable async callback
+        //return true; // to enable async callback
     }
 
     static onOpenPopup() { // called when popup is opened
         super.onOpenPopup(); // do not remove
         //fromBackground(string, message, function(){console.log(message);});
         trace("custom popup open");
+        setInterval(this.follow(), 2000);
 
 
         // type here
