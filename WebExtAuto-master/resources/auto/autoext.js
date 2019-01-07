@@ -621,6 +621,12 @@ class AutoContentScript extends ExtensionContentScript {
     }
 
     /// keyboard
+
+     /**
+     * @method clickOnElement: click on one element selected by path
+     * @param {string} path:
+     * @param {Function} delay:
+     */
 	
 	static clickOnElement(path,delay){
 		Lazy.delay(function(){
@@ -639,7 +645,6 @@ class AutoContentScript extends ExtensionContentScript {
 	 * @param {string} keyword :
 	 *
 	 */
-
     static rechercher(message) {
         Lazy.delay(function(message) {
             var pathsSearch = '//input[@id="search-query"]';
@@ -729,7 +734,10 @@ class AutoContentScript extends ExtensionContentScript {
         }.bind(this), "3000");
     }
 
-    static follow(message) {
+    /**
+     * @method follow: follow account 
+     */
+    static follow() {
         Lazy.delay(function(message) {
             let pathFollow1 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[1]/div[3]/div/span/button[1]';
             let pathFollow2 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[2]/div[3]/div/span/button[1]';
