@@ -5,7 +5,7 @@ Projet réalisé pour le cours de programmation web avancé donné à l'universi
 ### Auteurs ###
 ------------------
 [Matthieu Viera Santa Cruz](https://github.com/Ziirofan) &
-[Augustin Brateau](https://github.com/Bratal)
+[Augustin Brateau](https://github.com/Bratal) & floflo
 
 ### Objectif
 -------------------
