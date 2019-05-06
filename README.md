@@ -2,10 +2,9 @@
 ----------------
 Projet réalisé pour le cours de programmation web avancé donné à l'université Paris VIII Saint-Denis.
 
-### Auteurs ###
+### Auteur ###
 ------------------
-[Matthieu Viera Santa Cruz](https://github.com/Ziirofan) &
-[Augustin Brateau](https://github.com/Bratal)
+[Matthieu Viera Santa Cruz](https://github.com/Ziirofan)
 
 ### Objectif
 -------------------
