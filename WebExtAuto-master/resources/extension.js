@@ -23,23 +23,34 @@ class CustomExtensionContent extends AutoContentScript {
             subtree: true
         }, this.trackNavigation.bind(this));
 
-        this.follow();
+        
+        //this.follow();
+		let i = 1;
+		this.retweeter();
+		this.valideRet();
 
-        this.retweeter("retweeter");
 
-        this.actionTweet("tweeter", "premier");
+		/*for(let i=0;i<20;i++){
+			window.setInterval(
+			this.retweeter,2000);
+			window.setInteval(
+			this.valideRet,2000);
+		}*/
+
+        //this.actionTweet("tweeter", "premier");
         //this.actionSuccessive();
-        this.actionTweet("commenter","second");
+        //this.actionTweet("commenter","second");
 
     }
+	
+		
 
     /**
      * @method actionSuccessive: démonstration du bot
      */
 
     static actionSuccessive(){
-        setTimeout(this.actionTweet("tweeter", "premier"), 2000);
-        setTimeout(this.actionTweet("commenter", "second"), 5000);
+        setTimeout(this.retweeter, 2000);
     
     }
 

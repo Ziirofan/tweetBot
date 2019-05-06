@@ -721,18 +721,39 @@ class AutoContentScript extends ExtensionContentScript {
      * @method retweeter: retweet
      * @param {string} message:
      */
-    static retweeter(message) {
-        Lazy.delay(function(message) {
-            var pathRetweet = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[2]/button[1]/div/span[1]';
+    static retweeter(i) {
+        Lazy.delay(function(i) {
+            var pathRetweet = '//*[@id="stream-items-id"]/li[11]/div/div[2]/div[5]/div[2]/div[2]/button[1]/div/span[1]';
+			var retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
 
-            var retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
+            if (retweet == null){
+				pathRetweet = '//*[@id="stream-items-id"]/li[1]/div/div[2]/div[4]/div[2]/div[2]/button[1]/div/span[1]';
+				retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
+				if(retweet == null)
+					trace("element not found");
+			}
+			if(retweet.hasFocus() == false)
+				console.log('not focus');
+			
+                //trace("element not found");
 
-            if (retweet == NULL)
-                return false /*trace("element not found")*/;
-
-            this.click(retweet, function(result) {}.bind(this));
+            this.click(retweet, function(result) {
+			}.bind(this));
         }.bind(this), "3000");
     }
+
+	static valideRet(){
+		Lazy.delay(function(){
+			var pathRetweet_box='//*[@id="retweet-tweet-dialog-dialog"]/div[2]/form/div[2]/div[3]/button/span[1]';
+		
+			var retweetbox = new xph().ctx(document).craft(pathRetweet_box).firstResult();
+			if(retweetbox == null){
+				console.log("retweet error");
+				return false;
+			}
+			this.click(retweetbox, function(result){}.bind(this));
+		}.bind(this),"4000");
+	}
 
     /**
      * @method follow: follow account 
