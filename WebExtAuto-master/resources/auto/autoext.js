@@ -529,7 +529,7 @@ class AutoContentScript extends ExtensionContentScript {
         let bw = bodyrect.width;
         let bh = bodyrect.height;
 
-        let bs = document.documentElement.scrollTop || document.body.scrollTop;
+        let bs = 500;//document.documentElement.scrollTop || document.body.scrollTop;
 
         let offset = 5;
         let elx = elrect.left;
@@ -540,18 +540,19 @@ class AutoContentScript extends ExtensionContentScript {
         let cx = Math.round(MoreMath.randRange(elx + offset, elx + elw - offset));
         let cy = Math.round(MoreMath.randRange(ely + offset, ely + elh - offset));
 
-        //trace("click", element, "[" + elx + "," + ely + " " + elw + "x" + elh);
-        //trace("body", bw + "x" + bh, "scroll", bs);
+        trace("click", element, "[" + elx + "," + ely + " " + elw + "x" + elh);
+        trace("body", bw + "x" + bh, "scroll", bs);
 
-        if (cy > bs + bh) {
+        if (cy > bs - elh ) {
             if (DEBUG) trace("not in viewport, scroll");
+            if (DEBUG) console.log("ely: "+cy+ " bs: "+bs+" elh: "+elh+ "= "+(bs-elh));
             this.comm.toBackground("scroll", {
                 "x": cx,
                 "y": cy,
                 "deltaY": ely - bs - elh
             }, function(result, el, ca) {
-                Lazy.hooman(this.click.bind(this), "long", el, ca);
-            }.bind(this), element, callback); // lol scroll and recurse
+                Lazy.delay(this.click.bind(this), 2000, el, ca);
+            }.bind(this), element, callback); 
         } else {
             this.comm.toBackground("click", {
                 "x": cx,
@@ -672,10 +673,10 @@ class AutoContentScript extends ExtensionContentScript {
 
             var pathsTweet = '//div[@id="tweet-box-home-timeline"]'; /*Élement box pour tweeter un message*/
             var pathsBouton = '//*[@id="timeline"]/div[2]/div/form/div[3]/div[2]/button'; /*Element du bouton d'envoi*/
-            let mes = this.message;
+            let nbr = Math.floor(Math.random() * Math.floor(10));
+            let mes = this.tendanceAr[nbr];
             var champsDeTweet = new xph().ctx(document).craft(pathsTweet).firstResult();
             var boutonPoster;
-
             if (champsDeTweet === null)
                 return false;
 
@@ -686,7 +687,7 @@ class AutoContentScript extends ExtensionContentScript {
                 }.bind(this));
             }.bind(this));
             return true;
-        }.bind(this), "5000");
+        }.bind(this), "2000");
 
     }
 
@@ -697,10 +698,12 @@ class AutoContentScript extends ExtensionContentScript {
     static commenter(message) {
         Lazy.delay(function(message) {
             var pathComment = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[1]/button/div/span[1]';
-            var pathPostComment = '//*[@id="global-tweet-dialog-dialog"]/div[2]/div[4]/form/div[3]/div[2]/button/span[2]';
-            let mes = this.message;
+            var pathPostComment = '//*[@id="global-tweet-dialog-dialog"]/div[2]/div[4]/form/div[3]/div[2]/button';
+            //*[@id="global-tweet-dialog-dialog"]/div[2]/div[4]/form/div[3]/div[2]/button
+            let mes = "retweeter";
             var comment = new xph().ctx(document).craft(pathComment).firstResult();
             var boutonPoste;
+
 
             if (comment == null){
                 trace("element not found");
@@ -709,9 +712,8 @@ class AutoContentScript extends ExtensionContentScript {
 
             this.click(comment, function(result) {
                 this.type(mes, function(result) {
-                    postComment = new xph().ctx(document).craft(pathPostComment).firstResult();
-                    setTimeout(
-                    this.click(postComment, function(result) {}.bind(this)), 2000);
+                    let postComment = new xph().ctx(document).craft(pathPostComment).firstResult();
+                    this.click(postComment, function(result) {}.bind(this));
                 }.bind(this));
             }.bind(this));
         }.bind(this), "10000");
@@ -721,27 +723,68 @@ class AutoContentScript extends ExtensionContentScript {
      * @method retweeter: retweet
      * @param {string} message:
      */
-    static retweeter(message) {
-        Lazy.delay(function(message) {
-            var pathRetweet = '//*[@id="stream-items-id"]/li/div/div[2]/div[3]/div[2]/div[2]/button[1]/div/span[1]';
+    static retweeter() {
+            let i = this.fol;
+            this.fol++;
+            var pathRetweet = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[5]/div[2]/div[2]/button[1]/div/span';
 
             var retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
 
-            if (retweet == NULL)
-                return false /*trace("element not found")*/;
+            if (retweet == null){
+                pathRetweet = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[4]/div[2]/div[2]/button[1]/div/span';
+                retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
+                if(retweet == null){
+                    pathRetweet = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[3]/div[2]/div[2]/button[1]/div/span';
+                    retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
+                    if(retweet == null){
+                    console.log("erreur path " + pathRetweet);
+                    return false /*trace("element not found")*/;
+                    }
+                }
 
-            this.click(retweet, function(result) {}.bind(this));
-        }.bind(this), "3000");
+                
+            }
+            //retweet.scrollIntoView();
+            this.click(retweet, function(result) {
+                console.log("click on "+pathRetweet);
+                //this.valideRetweet();
+                //this.valideRetweet();
+            }.bind(this));
+            
+            
+            /*Lazy.delay(function(){
+                this.click(retweet, function(result) {
+                //this.valideRetweet();
+            }.bind(this));*/
+
+
+            //}.bind(this),2000);
+            
+    }
+
+    static valideRetweet(){
+            var pathRetV='//*[@id="retweet-tweet-dialog-dialog"]/div[2]/form/div[2]/div[3]/button/span[1]';
+
+            var retV = new xph().ctx(document).craft(pathRetV).firstResult();
+
+            if(retV == null)
+                return false;
+
+            this.click(retV, function(result){}.bind(this));   
+
     }
 
     /**
      * @method follow: follow account 
      */
-    static follow() {
-        Lazy.delay(function(message) {
-            let pathFollow1 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[1]/div[3]/div/span/button[1]';
+    static follow(bouton) {
+        Lazy.delay(function(bouton) {
+            let pathFollow1 = '//*[@id="page-container"]/div[3]/div[1]/div[1]/div[2]/div['+this.fol+']/div[3]/div/span/button[1]';
             let pathFollow2 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[2]/div[3]/div/span/button[1]';
             let pathFollow3 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[3]/div[3]/div/span/button[1]';
+            this.fol++;
+            //if(this.fol < 5)
+                //this.fol = 1;
 
             let follow1 = new xph().ctx(document).craft(pathFollow1).firstResult();
             let follow2 = new xph().ctx(document).craft(pathFollow2).firstResult();
@@ -755,7 +798,27 @@ class AutoContentScript extends ExtensionContentScript {
             //this.click(follow3, function(result) {}.bind(this));
         }.bind(this), "1000");
     }
+    static controlTweetSponso(){
+        let i = this.fol;
+            var pathSponso = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[6]/span/span/a';
 
+            var sponso = new xph().ctx(document).craft(pathRetweet).firstResult();
+            if(sponso.innerText == "Sponsorisé" || sponso.textContent == "Sponsorisé"){
+                return false;
+            }
+
+            pathSponso = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[5]/span/span/a';
+            sponso = new xph().ctx(document).craft(pathRetweet).firstResult();
+            if(sponso.innerText == "Sponsorisé" || sponso.textContent == "Sponsorisé"){
+                return false;
+            }
+                
+            pathSponso = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[4]/span/span/a';
+            sponso = new xph().ctx(document).craft(pathRetweet).firstResult(); 
+            if(sponso.innerText == "Sponsorisé" || sponso.textContent == "Sponsorisé"){
+                return false;
+            }            
+    }
 }
 
 /**
@@ -919,7 +982,7 @@ class Observer {
             "watcher": watcher
         });
         watcher.observe(element, options);
-        //trace("watch", element.nodeName, watchid);
+        trace("watch", element.nodeName, watchid);
         return watchid;
     }
 

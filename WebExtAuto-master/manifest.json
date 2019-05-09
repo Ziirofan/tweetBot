@@ -1,12 +1,16 @@
 { // https://developer.chrome.com/extensions/manifest
 
-	"manifest_version": 2,
+	"manifest_version": 3,
 
-	"name": "WebExtAuto",
+	"name": "Bot twitter",
 
-	"author": "Nico Pr modified by Ziirofan & Bratal",
+	"author": "Ziirofan",
 
-	"version": "1.1",
+	"version": "1.3",
+
+	"developer": {
+  		"name": "Ziirofan"
+	},
 
 	"description": "a chrome extension to bot twitter",
 
@@ -46,6 +50,11 @@
 
 		]
 
+	},
+
+	"options_ui": {
+  		"page": "resources/options/options.html",
+  		"browser_style": true
 	},
 
 	"content_scripts": [ // https://developer.chrome.com/extensions/content_scripts

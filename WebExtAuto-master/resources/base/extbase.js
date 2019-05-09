@@ -85,7 +85,7 @@
 
 */
 
-const DEBUG = false; // true = verbose, false = be quiet + removes every line "if(DEBUG) trace || console.log" while compiling with closure
+const DEBUG = true; // true = verbose, false = be quiet + removes every line "if(DEBUG) trace || console.log" while compiling with closure
 
 const COMM_MESSAGE = 0;
 const COMM_PORT = 1;
@@ -1878,6 +1878,7 @@ class ExtensionBackgroundScript extends ExtensionScript {
 	*/
 	static onStartup() {
 		trace("startup");
+
 	}
 
 	/**
@@ -1914,6 +1915,7 @@ class ExtensionBackgroundScript extends ExtensionScript {
 	static onOpenPopup() {
 		this.tabs.forEach(function(tab, tabid) { this.comm.toContent(tabid, "open", {}, die); }.bind(this));
 		this.activeTab(this.popupState.bind(this));
+		var option = chrome.runtime.openOptionsPage();
 	}
 
 	static onClosePopup() {
