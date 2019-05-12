@@ -723,7 +723,6 @@ class AutoContentScript extends ExtensionContentScript {
      * @method retweeter: retweet
      * @param {string} message:
      */
-
     static retweeter() {
             let i = this.fol;
             this.fol++;
@@ -733,6 +732,8 @@ class AutoContentScript extends ExtensionContentScript {
             post.scrollIntoView(true);*/
 
 
+
+if(!this.controlTweetSponso()){
             var pathRetweet = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[5]/div[2]/div[2]/button[1]/div/span';
 
             var retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
@@ -749,6 +750,8 @@ class AutoContentScript extends ExtensionContentScript {
                     }
                 }
 
+                
+            }
             //retweet.scrollIntoView();
             this.click(retweet, function(result) {
                 console.log("click on "+pathRetweet);
@@ -779,19 +782,6 @@ class AutoContentScript extends ExtensionContentScript {
 
     }
 
-	static valideRet(){
-		Lazy.delay(function(){
-			var pathRetweet_box='//*[@id="retweet-tweet-dialog-dialog"]/div[2]/form/div[2]/div[3]/button/span[1]';
-		
-			var retweetbox = new xph().ctx(document).craft(pathRetweet_box).firstResult();
-			if(retweetbox == null){
-				console.log("retweet error");
-				return false;
-			}
-			this.click(retweetbox, function(result){}.bind(this));
-		}.bind(this),"4000");
-	}
-
     /**
      * @method follow: follow account 
      */
@@ -815,6 +805,43 @@ class AutoContentScript extends ExtensionContentScript {
             //setTimeout(this.click(follow2, function(result) {}.bind(this)), 2000);
             //this.click(follow3, function(result) {}.bind(this));
         }.bind(this), "1000");
+    }
+    static controlTweetSponso(pathSponso){
+        let i = this.fol;
+
+            var pathSponso = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[6]/span/span/a';
+            var sponso = new xph().ctx(document).craft(pathSponso).firstResult();
+            if(sponso != null){
+                if((sponso.innerText == "Sponsorisé" || sponso.textContent == "Sponsorisé") || (sponso.innerText == "Promoted" || sponso.textContent == "Promoted")){
+                    console.log("SPONSO tweet n"+i);
+                    this.fol++;
+                    return true;
+                }
+            }
+
+            pathSponso = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[5]/span/span/a';
+            sponso = new xph().ctx(document).craft(pathSponso).firstResult();
+            if(sponso != null){
+                if((sponso.innerText == "Sponsorisé" || sponso.textContent == "Sponsorisé") || (sponso.innerText == "Promoted" || sponso.textContent == "Promoted")){
+                    console.log("SPONSO tweet n"+i);
+                    this.fol++;
+                    return true;
+                }
+            }
+                
+            pathSponso = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[4]/span/span/a';
+            sponso = new xph().ctx(document).craft(pathSponso).firstResult(); 
+            if(sponso != null){
+                if((sponso.innerText == "Sponsorisé" || sponso.textContent == "Sponsorisé") || (sponso.innerText == "Promoted" || sponso.textContent == "Promoted")){
+                    console.log("SPONSO tweet n"+i);
+                    this.fol++;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;            
     }
 }
 
