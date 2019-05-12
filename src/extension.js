@@ -1,64 +1,3 @@
-   function attenteClick() {
-       return new Promise(resolve => {
-           setTimeout(() => {
-               this.follow()
-               resolve('resolved');
-           }, 10000)
-       });
-   }
-   async function follower() {
-       let i = 0;
-       while (i < 50) {
-           let reponse = await attenteClick.call(this);
-           i++;
-       }
-       let follow = localStorage.getItem("nbrFollow");
-       if (follow == null) {
-           follow = 0;
-       }
-       let nfol = i + follow;
-       localStorage.setItem("nbrFollow", nfol);
-       console.log(localStorage.getItem("nbrFollow"));
-
-   }
-
-   function attenteClickt() {
-       return new Promise(resolve => {
-           setTimeout(() => {
-               this.retweeter();
-               this.valideRetweet();
-               resolve('resolved');
-           }, 3000)
-       });
-   }
-   function attenteClickv() {
-       return new Promise(resolve => {
-           setTimeout(() => {
-               //this.retweeter();
-               this.valideRetweet();
-               resolve('resolved');
-           }, 5000)
-       });
-   }
-   async function ret() {
-       let i = 0;
-       while (i < 20) {
-           let reponse = await attenteClickt.call(this);
-           //if(reponse)
-            //let reponse2 = await attenteClickv.call(this);
-           i++;
-       }
-       /*let follow = localStorage.getItem("nbrFollow");
-       if (follow == null) {
-           follow = 0;
-       }
-       let nfol = i + follow;
-       localStorage.setItem("nbrFollow", nfol);
-       console.log(localStorage.getItem("nbrFollow"));*/
-
-   }
-//*[@id="page-container"]/div[1]/div[2]/div/div/div[2]/ul/li[2]/a/span
-//*[@id="page-container"]/div[1]/div[2]/div/div/div[2]/ul/li[4]/a/span
    /**
     * @nocollapse
     * @extends {AutoContentScript}
@@ -94,21 +33,6 @@
           
 
            this.retweetWorker(30);
-
-           //ret.call(this);
-           //this.retweeter("retweeter");
-           //this.valideRetweet();
-           /*Lazy.delay(function(){
-           this.tendanceAr = this.recupeTendance()
-           console.log(this.tendanceAr);
-           this.actionTweet("tweeter")}.bind(this),"3000");
-           
-            //this.actionTweet("tweeter", "premier");
-           //this.actionSuccessive();
-           //this.actionTweet("commenter","second");
-           follower.call(this);*/
-
-
 
        }
 
@@ -160,67 +84,6 @@
 
        }
 
-       // static follow() {
-
-       ////*[@id="page-container"]/div[1]/div[2]/div[1]/div[1]/small[2]/a
-       ////*[@id="stream-item-user-*"]/div/div[1]/div/span/button[1]
-       /*
-           
-
-
-
-
-        
-       let f = document.getElementsByClassName('follow-button')
-       console.log(f);
-       for(let i= 0; i<f.length;i++){
-           f[i].click();
-       }*/
-       /* async function glick() {
-            let pathA = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[1]/small[2]/a'
-            let click = this.clickOnElement(pathA, "6000");
-            console.log(click);
-            
-        }
-        async function fol() {
-            let foo = await glick.call(this);
-            let pathcrafted = new xph().ctx(document).craft(pathA).textContains("suivre");
-            Lazy.delay(function(foo) {
-                this.click(pathcrafted);
-
-            }.bind(this), "1000");
-            let ff = document.querySelectorAll('follow-button');
-            for(let i = 0; i < ff.length; i++){
-                console.log(ff[i]);
-            }*/
-       /*let c = document.evaluate('//text()[contains(name(.), suivre)]', document.body, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
-       var thisNode = c.iterateNext();
-
-       while (thisNode) {
-           console.log(thisNode.textContent);
-           thisNode = c.iterateNext();
-       }*/
-       // }
-       //fol.call(this);
-       //console.log(r);
-
-
-
-       /*
-        * Utiliser une promise, quand celle-ci est tenue on cherche ensuite l'element
-        * follow par une recherche par nom. 
-        */
-
-
-       /*   console.log("recherche de bouton follow");
-          let c = document.evaluate('//text()[contains(name(.), suivre)]',document.body,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null);
-          console.log(c);*/
-       /*this.actionTweet("rechercher", "Bonjour");
-       follower.call(this);*/
-
-
-
-       // }
        /**
         * @method actionTweet: réalise une action du bot
         * @param {string} action: action à effectuer
@@ -253,10 +116,6 @@
 
 
        }
-
-
-
-
 
        static trackNavigation(trackid, item, element, mutationtype, mutation) {
            //trace(mutation);
