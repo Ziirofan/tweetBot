@@ -2,11 +2,11 @@
 
 	"manifest_version": 2,
 
-	"name": "WebExtAuto",
+	"name": "Bot twitter",
 
-	"author": "Nico Pr modified by Ziirofan & Bratal",
+	"author": "Ziirofan",
 
-	"version": "1.1",
+	"version": "1.3",
 
 	"description": "a chrome extension to bot twitter",
 
@@ -30,7 +30,7 @@
 
 		"default_title": "Bot Twitter",
 		"default_icon": "assets/icons/bot.png",
-		"default_popup": "resources/popup/popup.html"
+		"default_popup": "src/popup/popup.html"
 
 	},
 
@@ -38,14 +38,19 @@
 
 		"scripts": [
 
-			"resources/base/extbase.js", // do not remove
-			"resources/auto/autoext.js", // do not remove
-			"resources/background.js" // do not remove
+			"src/base/extbase.js", // do not remove
+			"src/auto/autoext.js", // do not remove
+			"src/background.js" // do not remove
 
-			//"resources/extension.min.js"
+			//"src/extension.min.js"
 
 		]
 
+	},
+
+	"options_ui": {
+  		"page": "src/options/options.html",
+  		"browser_style": true
 	},
 
 	"content_scripts": [ // https://developer.chrome.com/extensions/content_scripts
@@ -73,11 +78,11 @@
 
 			"js": [
 
-				"resources/base/extbase.js", // do not remove
-				"resources/auto/autoext.js", // do not remove
-				"resources/extension.js" // do not remove
+				"src/base/extbase.js", // do not remove
+				"src/auto/autoext.js", // do not remove
+				"src/extension.js" // do not remove
 
-				//"resources/extension.min.js" // do not remove
+				//"src/extension.min.js" // do not remove
 
 			],
 
@@ -86,12 +91,12 @@
 		}
 	],
 
-	"web_accessible_resources": [ // https://developer.chrome.com/extensions/manifest/web_accessible_resources
+	"web_accessible_resources": [ // https://developer.chrome.com/extensions/manifest/web_accessible_src
 
-		"resources/base/extbase.js",
-		"resources/web.js"
+		"src/base/extbase.js",
+		"src/web.js"
 
-		//"resources/extension.min.js" // closure compiled
+		//"src/extension.min.js" // closure compiled
 
 	],
 

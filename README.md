@@ -1,38 +1,28 @@
-# tweetBot
-----------------
-Projet réalisé pour le cours de programmation web avancé donné à l'université Paris VIII Saint-Denis.
+# Twitter Bot
 
-### Auteur ###
-------------------
-[Matthieu Viera Santa Cruz](https://github.com/Ziirofan)
+A web extension that boosts a twitter account by retweeting all the posts of a twitter list (tl).
 
-### Objectif
--------------------
-Réaliser une extension web applicable au site [twitter](https://twitter.com/) _bot twitter_
 
-### Langages utilisés
---------------
-* Javascript, Jquery
-* HTML/CSS (pour la mise en page de la Popup)
+## Installation Instructions & Quick Start
 
-### Outils utilisés
---------------
+1. Download or clone this repository
 
-* basé sur le projet [WebExtAuto](https://github.com/nicopowa/WebExtAuto)
+2. Visit `chrome://extensions` (via omnibox or menu -> Tools -> Extensions).
 
-### Étapes de développement
------------------
+3. Enable Developer mode by ticking the checkbox in the upper-right corner.
 
-1) Implémenter une fonctionnalité pour que le bot tweet automatiquement (en cours).
-    * Effectuer la tache à l'ouverture de la page (fini)
-    * Implémenter un bouton dans le Popup pour l'utiliser (en cours)
-    * Implémenter une base de donnée ou similaire pour y piocher les messages.
+4. Click on the "Load unpacked extension..." button.
 
-2) Implémenter la possibilité au bot de retweeter et Liker.
-    * Effectuer la tache à l'ouverture de la page.
-    * Implémenter un bouton dans le Popup pour l'utiliser.
+5. Select the directory containing your **unpacked** extension.
 
-3) Implémenter la possibilité au bot de commenter un tweet.
-    * Effectuer la tache à l'ouverture de la page
-    * Implémenter un bouton dans le Popup pour l'utiliser
-    * Implémenter une base de donnée ou similaire pour y piocher les messages.
+6. go to twitter, log in to your account
+
+7. Watch bot work on your tl (just keep browser open)
+
+# Contributing
+
+- Reporting Bugs by open an issue.
+
+- Suggesting Enhancements
+
+  
