@@ -503,6 +503,16 @@ class AutoContentScript extends ExtensionContentScript {
         Observer.initialize();
     }
 
+    static PromotedKeyWord(){
+
+        this.promKey=[
+            "Promoted",
+            "Sponsorisé",
+            "Promocionado"
+
+        ]
+    }
+
     // mouse
 
     /**

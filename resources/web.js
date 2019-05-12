@@ -6,9 +6,9 @@
 class CustomExtensionWeb extends ExtensionWebScript {
 
 	static initialize() {
-
-		this.extid = "jhmlknjignnppjjobobgmocbdeoaebjp"; // chrome extension id, required for webpage <=> extension communications
-
+ 
+		this.extid = "kpmmdgldobaimdnlapjglfjpgimfgego"; // chrome extension id, required for webpage <=> extension communications
+//jhmlknjignnppjjobobgmocbdeoaebjp
 		super.initialize();
 	}
 
