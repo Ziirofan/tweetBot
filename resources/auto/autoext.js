@@ -6,7 +6,7 @@ class AutoBackgroundScript extends ExtensionBackgroundScript {
 
     constructor() { // useless, for closure compiler
         super();
-    } 
+    }
 
     /**
      * @method initialize:
@@ -107,14 +107,14 @@ class AutoBackgroundScript extends ExtensionBackgroundScript {
         }
 
     }
-    
-	static fromPopup(tabid, type, message, callback) {
+
+    static fromPopup(tabid, type, message, callback) {
         super.fromPopup(tabid, type, message, callback); // don't remove this one, super has work to do
 
         switch (type) {
             case "click":
                 this.click(tabid, message, callback);
-				console.log("BBBB");
+                console.log("BBBB");
                 return true;
                 break;
 
@@ -133,7 +133,7 @@ class AutoBackgroundScript extends ExtensionBackgroundScript {
                 return true;
                 break;
         }
-	}
+    }
 
 
 
@@ -503,6 +503,16 @@ class AutoContentScript extends ExtensionContentScript {
         Observer.initialize();
     }
 
+    static PromotedKeyWord(){
+
+        this.promKey=[
+            "Promoted",
+            "Sponsorisé",
+            "Promocionado"
+
+        ]
+    }
+
     // mouse
 
     /**
@@ -529,7 +539,7 @@ class AutoContentScript extends ExtensionContentScript {
         let bw = bodyrect.width;
         let bh = bodyrect.height;
 
-        let bs = 500;//document.documentElement.scrollTop || document.body.scrollTop;
+        let bs = 500; //document.documentElement.scrollTop || document.body.scrollTop;
 
         let offset = 5;
         let elx = elrect.left;
@@ -543,16 +553,16 @@ class AutoContentScript extends ExtensionContentScript {
         trace("click", element, "[" + elx + "," + ely + " " + elw + "x" + elh);
         trace("body", bw + "x" + bh, "scroll", bs);
 
-        if (cy > bs - elh ) {
+        if (cy > bs - elh) {
             if (DEBUG) trace("not in viewport, scroll");
-            if (DEBUG) console.log("ely: "+cy+ " bs: "+bs+" elh: "+elh+ "= "+(bs-elh));
+            if (DEBUG) console.log("ely: " + cy + " bs: " + bs + " elh: " + elh + "= " + (bs - elh));
             this.comm.toBackground("scroll", {
                 "x": cx,
                 "y": cy,
                 "deltaY": ely - bs - elh
             }, function(result, el, ca) {
                 Lazy.delay(this.click.bind(this), 2000, el, ca);
-            }.bind(this), element, callback); 
+            }.bind(this), element, callback);
         } else {
             this.comm.toBackground("click", {
                 "x": cx,
@@ -623,29 +633,31 @@ class AutoContentScript extends ExtensionContentScript {
 
     /// keyboard
 
-     /**
+    /**
      * @method clickOnElement: click on one element selected by path
      * @param {string} path:
      * @param {Function} delay:
      */
-	
-	static clickOnElement(path,delay){
-		Lazy.delay(function(){
-		let pathEleme = new xph().ctx(document).craft(path).firstResult();
-		if(pathEleme == null)
-			return false;
-		else{
-			this.click(pathEleme, function(result){ return true;});
-            return true;
-        }
-	}.bind(this),delay);
-	}
 
-	/**
-	 * @method rechercher : recherche un mot
-	 * @param {string} keyword :
-	 *
-	 */
+    static clickOnElement(path, delay) {
+        Lazy.delay(function() {
+            let pathEleme = new xph().ctx(document).craft(path).firstResult();
+            if (pathEleme == null)
+                return false;
+            else {
+                this.click(pathEleme, function(result) {
+                    return true;
+                });
+                return true;
+            }
+        }.bind(this), delay);
+    }
+
+    /**
+     * @method rechercher : recherche un mot
+     * @param {string} keyword :
+     *
+     */
     static rechercher(message) {
         Lazy.delay(function(message) {
             var pathsSearch = '//input[@id="search-query"]';
@@ -653,7 +665,7 @@ class AutoContentScript extends ExtensionContentScript {
             var champsDeRecherche = new xph().ctx(document).craft(pathsSearch).firstResult();
 
             if (champsDeRecherche === null)
-                return false /*trace("element not found")*/;
+                return false /*trace("element not found")*/ ;
 
             this.click(champsDeRecherche, function(result) {
                 this.type("h", function(result) {
@@ -661,9 +673,9 @@ class AutoContentScript extends ExtensionContentScript {
                 }.bind(this));
             }.bind(this));
         }.bind(this), "1000");
-	}
+    }
 
-	/**
+    /**
      * @method tweeter: tweeter string text
      * @param {string} message:
      */
@@ -691,7 +703,7 @@ class AutoContentScript extends ExtensionContentScript {
 
     }
 
-	/**
+    /**
      * @method commenter: comment string text
      * @param {string} message:
      */
@@ -705,9 +717,9 @@ class AutoContentScript extends ExtensionContentScript {
             var boutonPoste;
 
 
-            if (comment == null){
+            if (comment == null) {
                 trace("element not found");
-                return false /*trace("element not found")*/;
+                return false /*trace("element not found")*/ ;
             }
 
             this.click(comment, function(result) {
@@ -719,102 +731,122 @@ class AutoContentScript extends ExtensionContentScript {
         }.bind(this), "10000");
     }
 
-	/**
+    /**
      * @method retweeter: retweet
      * @param {string} message:
      */
-
     static retweeter() {
-            let i = this.fol;
-            this.fol++;
+        let i = this.fol;
+        this.fol++;
 
-            /*var pathPost = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[4]/div[2]/div[4]/button/div/span';
-            var post = new xph().ctx(document).craft(pathPost).firstResult();
-            post.scrollIntoView(true);*/
+        /*var pathPost = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[4]/div[2]/div[4]/button/div/span';
+        var post = new xph().ctx(document).craft(pathPost).firstResult();
+        post.scrollIntoView(true);*/
 
 
-            var pathRetweet = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[5]/div[2]/div[2]/button[1]/div/span';
+
+        if (!this.controlTweetSponso()) {
+            var pathRetweet = '//*[@id="stream-items-id"]/li[' + i + ']/div[1]/div[2]/div[5]/div[2]/div[2]/button[1]/div/span';
 
             var retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
-            
-            if (retweet == null){
-                pathRetweet = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[4]/div[2]/div[2]/button[1]/div/span';
+
+            if (retweet == null) {
+                pathRetweet = '//*[@id="stream-items-id"]/li[' + i + ']/div[1]/div[2]/div[4]/div[2]/div[2]/button[1]/div/span';
                 retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
-                if(retweet == null){
-                    pathRetweet = '//*[@id="stream-items-id"]/li['+i+']/div[1]/div[2]/div[3]/div[2]/div[2]/button[1]/div/span';
+                if (retweet == null) {
+                    pathRetweet = '//*[@id="stream-items-id"]/li[' + i + ']/div[1]/div[2]/div[3]/div[2]/div[2]/button[1]/div/span';
                     retweet = new xph().ctx(document).craft(pathRetweet).firstResult();
-                    if(retweet == null){
-                    console.log("erreur path " + pathRetweet);
-                    return false /*trace("element not found")*/;
+                    if (retweet == null) {
+                        console.log("erreur path " + pathRetweet);
+                        return false /*trace("element not found")*/ ;
                     }
                 }
 
+
+            }
             //retweet.scrollIntoView();
             this.click(retweet, function(result) {
-                console.log("click on "+pathRetweet);
-                //this.valideRetweet();
-                //this.valideRetweet();
+                console.log("click on " + pathRetweet);
             }.bind(this));
-            }
-            
-            /*Lazy.delay(function(){
-                this.click(retweet, function(result) {
-                //this.valideRetweet();
-            }.bind(this));*/
-
-
-            //}.bind(this),2000);
-            
-    }
-
-    static valideRetweet(){
-            var pathRetV='//*[@id="retweet-tweet-dialog-dialog"]/div[2]/form/div[2]/div[3]/button/span[1]';
-
-            var retV = new xph().ctx(document).craft(pathRetV).firstResult();
-
-            if(retV == null)
-                return false;
-
-            this.click(retV, function(result){}.bind(this));   
+        }
 
     }
 
-	static valideRet(){
-		Lazy.delay(function(){
-			var pathRetweet_box='//*[@id="retweet-tweet-dialog-dialog"]/div[2]/form/div[2]/div[3]/button/span[1]';
-		
-			var retweetbox = new xph().ctx(document).craft(pathRetweet_box).firstResult();
-			if(retweetbox == null){
-				console.log("retweet error");
-				return false;
-			}
-			this.click(retweetbox, function(result){}.bind(this));
-		}.bind(this),"4000");
-	}
+    static valideRetweet() {
+        var pathRetV = '//*[@id="retweet-tweet-dialog-dialog"]/div[2]/form/div[2]/div[3]/button/span[1]';
+
+        var retV = new xph().ctx(document).craft(pathRetV).firstResult();
+
+        if (retV == null)
+            return false;
+
+        this.click(retV, function(result) {}.bind(this));
+
+    }
 
     /**
      * @method follow: follow account 
      */
     static follow(bouton) {
         Lazy.delay(function(bouton) {
-            let pathFollow1 = '//*[@id="page-container"]/div[3]/div[1]/div[1]/div[2]/div['+this.fol+']/div[3]/div/span/button[1]';
+            let pathFollow1 = '//*[@id="page-container"]/div[3]/div[1]/div[1]/div[2]/div[' + this.fol + ']/div[3]/div/span/button[1]';
             let pathFollow2 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[2]/div[3]/div/span/button[1]';
             let pathFollow3 = '//*[@id="page-container"]/div[1]/div[2]/div[1]/div[2]/div[3]/div[3]/div/span/button[1]';
             this.fol++;
             //if(this.fol < 5)
-                //this.fol = 1;
+            //this.fol = 1;
 
             let follow1 = new xph().ctx(document).craft(pathFollow1).firstResult();
             let follow2 = new xph().ctx(document).craft(pathFollow2).firstResult();
             let follow3 = new xph().ctx(document).craft(pathFollow3).firstResult();
 
             if (follow1 == null)
-                return false /*trace("element not found")*/;
+                return false /*trace("element not found")*/ ;
 
             this.click(follow1, function(result) {}.bind(this));
             //setTimeout(this.click(follow2, function(result) {}.bind(this)), 2000);
             //this.click(follow3, function(result) {}.bind(this));
         }.bind(this), "1000");
+    }
+
+    /**
+     * @method controlTweetSponso: skip promoted tweet with search keyword in div
+     * @param {string} keyword:
+     */
+    static controlTweetSponso(keyword) {
+        let i = this.fol;
+
+        var pathSponso = '//*[@id="stream-items-id"]/li[' + i + ']/div[1]/div[2]/div[6]/span/span/a';
+        var sponso = new xph().ctx(document).craft(pathSponso).firstResult();
+        if (sponso != null) {
+            if ((sponso.innerText == "Sponsorisé" || sponso.textContent == "Sponsorisé") || (sponso.innerText == "Promoted" || sponso.textContent == "Promoted")) {
+                console.log("SPONSO tweet n" + i);
+                this.fol++;
+                return true;
+            }
+        }
+
+        pathSponso = '//*[@id="stream-items-id"]/li[' + i + ']/div[1]/div[2]/div[5]/span/span/a';
+        sponso = new xph().ctx(document).craft(pathSponso).firstResult();
+        if (sponso != null) {
+            if ((sponso.innerText == "Sponsorisé" || sponso.textContent == "Sponsorisé") || (sponso.innerText == "Promoted" || sponso.textContent == "Promoted")) {
+                console.log("SPONSO tweet n" + i);
+                this.fol++;
+                return true;
+            }
+        }
+
+        pathSponso = '//*[@id="stream-items-id"]/li[' + i + ']/div[1]/div[2]/div[4]/span/span/a';
+        sponso = new xph().ctx(document).craft(pathSponso).firstResult();
+        if (sponso != null) {
+            if ((sponso.innerText == "Sponsorisé" || sponso.textContent == "Sponsorisé") || (sponso.innerText == "Promoted" || sponso.textContent == "Promoted")) {
+                console.log("SPONSO tweet n" + i);
+                this.fol++;
+                return true;
+            } else
+                return false;
+        } else
+            return false;
     }
 }
 

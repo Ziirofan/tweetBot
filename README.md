@@ -1,6 +1,9 @@
 # Twitter Bot
 
+
+
 A web extension that boosts a twitter account by retweeting all the posts of a twitter list (tl).
+
 
 
 ## Installation Instructions & Quick Start
@@ -24,5 +27,11 @@ A web extension that boosts a twitter account by retweeting all the posts of a t
 - Reporting Bugs by open an issue.
 
 - Suggesting Enhancements
+
+
+
+#### Web extension base (extbase.js) by [Nicopr](https://github.com/nicopowa)
+
+
 
   
